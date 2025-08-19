@@ -1,48 +1,64 @@
-# punkst
 
-punkst is an ongoing effort to provide scalable tools for analyzing high resolution spatial transcriptomics data. Currently it mainly contains a new implementation of [FICTURE](https://doi.org/10.1038/s41592-024-02415-2).
+# Spacial Transcriptomics
+## Please note: This Readme is a work in progress..
 
-Documentation: [https://Yichen-Si.github.io/punkst](https://Yichen-Si.github.io/punkst)
+This repository combines **punkst** (scalable tools for analyzing high-resolution spatial transcriptomics data) and **FICTURE** (fast image-based clustering and transcriptomics utility).  
+It provides a unified framework for preprocessing, analyzing, and visualizing spatial transcriptomics data at scale.
+
+## Documentation
+- [Project Documentation](https://Yichen-Si.github.io/punkst) (currently focused on punkst; FICTURE docs are being merged)
+
+## Repository Structure
+- `src/` – Core source code for punkst  
+- `examples/` – Example pipelines and usage for punkst & FICTURE  
+- `docs/` – Documentation site configuration (mkdocs)  
+- `script/` – Utility and helper scripts  
+- `ext/` – External modules and dependencies  
+- `DE_preprocessing.py` – Differential expression preprocessing (FICTURE-related)  
 
 ## Installation
-See more details in [install page](https://yichen-si.github.io/punkst/install/).
 
-If you are having difficulty installing, let us known (by opening an issue), and meanwhile you can fall back to the [python package](https://github.com/seqscope/ficture) if you just want to test FICTURE or run a small dataset.
+You can build from source or use Docker.  
+Both **punkst** and **FICTURE** are included in this repo.
 
+### From Source
 
-### Building from Source
+#### Prerequisites
+- Git  
+- CMake: 3.15 to 3.23  
+- C++17 compiler (GCC ≥8, Clang ≥5, MSVC 2017+)  
+- TBB, OpenCV  
 
-**Prerequisites**
-
-- Git
-- CMake: 3.15 to 3.23
-- C++17 compiler* (GCC ≥8, Clang ≥5, MSVC 2017+)
-- TBB, OpenCV
-
-*We do assume your compiler properly supports C++17. Consider updating the compiler if you encounter issues.
-
+#### Steps
 ```bash
 # 1) Clone the repository
-git clone --recursive https://github.com/your-org/punkst.git
-cd punkst
+git clone --recursive https://github.com/your-org/xenium_spacialtranscriptomatics.git
+cd xenium_spacialtranscriptomatics
+
 # 2) Create and enter a build directory
 mkdir build && cd build
+
 # 3) Configure
 cmake ..
-# 4) Build
-cmake --build . --parallel # or make
-```
 
-If you did not clone the submodule (Eigen) initially, you can do
+# 4) Build
+cmake --build . --parallel
+````
+
+If you did not clone the submodule (Eigen) initially, run:
+
 ```bash
 git submodule update --init
 ```
 
-If TBB is not found, you can install it by `sudo apt-get install libtbb-dev` or `yum install tbb-devel` on linux and `brew install tbb` on macOS.
+If TBB is not found, install it via:
 
-If you don't have root access on linux, you can [install oneTBB](https://github.com/uxlfoundation/oneTBB/blob/master/INSTALL.md) locally.
+* Ubuntu/Debian: `sudo apt-get install libtbb-dev`
+* Fedora: `sudo yum install tbb-devel`
+* macOS: `brew install tbb`
 
-If you installed some dependencies locally, you may need to specify their paths like
+If installed locally, you may need to specify paths:
+
 ```bash
 cmake .. \
   -DOpenCV_DIR=$HOME/.local/lib/cmake/opencv4 \
@@ -52,28 +68,39 @@ cmake .. \
 
 The `punkst` binary will be placed in `bin/` under the project root.
 
-Verify the Build
-
-```bash
-punkst/bin/punkst --help
-```
-
-You should see a message starting with
-```
-Available Commands
-The following commands are available:
-```
-
 ### Using Docker
 
-**Prerequisite:** [Docker](https://docs.docker.com/get-docker/)
+Prerequisite: Docker
 
 ```bash
 docker pull philo1984/punkst:latest
 ```
 
-Viirfy the installation:
+Verify installation:
 
 ```bash
 docker run --rm philo1984/punkst:latest punkst --help
+docker run --rm philo1984/punkst:latest ficture --help
+```
+
+## Usage
+
+### Running punkst
+
+```bash
+punkst/bin/punkst --help
+```
+
+### Running FICTURE
+
+```bash
+python DE_preprocessing.py --input your_data.h5 --output results/
+```
+
+---
+
+## License
+
+This project is licensed under the terms of the LICENSE file included in this repository.
+
 ```
